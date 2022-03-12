@@ -5,6 +5,7 @@ import (
 	"errors"
 	"os"
 	"os/exec"
+	"fmt"
 
 	"github.com/go-kit/kit/log"
 )
@@ -44,8 +45,8 @@ type ExecutableCSRVerifier struct {
 	logger     log.Logger
 }
 
-func (v *ExecutableCSRVerifier) Verify(data []byte) (bool, error) {
-	cmd := exec.Command(v.executable)
+func (v *ExecutableCSRVerifier) Verify(data []byte, ChallengePassword string) (bool, error) {
+	cmd := exec.Command(v.executable,ChallengePassword)
 
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
@@ -57,10 +58,13 @@ func (v *ExecutableCSRVerifier) Verify(data []byte) (bool, error) {
 		stdin.Write(data)
 	}()
 
-	err = cmd.Run()
+	out, err := cmd.CombinedOutput()
 	if err != nil {
 		v.logger.Log("err", err)
+		v.logger.Log("err", out)
 		// mask the executable error
+		fmt.Printf("エラー %s\n",err)
+		fmt.Printf("エラー %s\n",out)
 		return false, nil
 	}
 	return true, err

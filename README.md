@@ -5,9 +5,15 @@
 
 `scep` is a Simple Certificate Enrollment Protocol server and client
 
+## Feture
+fork with `https://github.com/micromdm/scep/`
+          `https://github.com/tasuku-revol/CSR_mongo`
+
+
+
 ## Installation
 
-Binary releases are available on the [releases page](https://github.com/micromdm/scep/releases).
+Binary releases are available on the [releases page](https://github.com/tasuku-revol/scep/releases).
 
 ### Compiling from source
 
@@ -31,7 +37,7 @@ Minimal example for both server and client.
 # create a new CA
 ./scepserver-linux-amd64 ca -init
 # start server
-./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret
+./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret -csrverifierexec ./verify
 
 # SCEP request:
 # in a separate terminal window, run a client
