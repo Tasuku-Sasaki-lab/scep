@@ -6,6 +6,8 @@ import (
 	"os"
 	"os/exec"
 	"fmt"
+	"crypto/x509"
+	//"io"
 
 	"github.com/go-kit/kit/log"
 )
@@ -45,7 +47,7 @@ type ExecutableCSRVerifier struct {
 	logger     log.Logger
 }
 
-func (v *ExecutableCSRVerifier) Verify(data []byte, ChallengePassword string) (bool, error) {
+func (v *ExecutableCSRVerifier) Verify(data []byte, ChallengePassword string,CSR *x509.CertificateRequest) (bool, error) {
 	cmd := exec.Command(v.executable,ChallengePassword)
 
 	stdin, err := cmd.StdinPipe()

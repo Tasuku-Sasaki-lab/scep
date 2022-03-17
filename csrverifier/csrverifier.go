@@ -11,13 +11,13 @@ import (
 
 // CSRVerifier verifies the raw decrypted CSR.
 type CSRVerifier interface {
-	Verify(data []byte,ChallengePassword string) (bool, error)
+	Verify(data []byte,ChallengePassword string,CSR *x509.CertificateRequest) (bool, error)
 }
 
 // Middleware wraps next in a CSRSigner that runs verifier
 func Middleware(verifier CSRVerifier, next scepserver.CSRSigner) scepserver.CSRSignerFunc {
 	return func(m *scep.CSRReqMessage) (*x509.Certificate, error) {
-		ok, err := verifier.Verify(m.RawDecrypted,m.ChallengePassword)
+		ok, err := verifier.Verify(m.RawDecrypted,m.ChallengePassword,m.CSR)
 		if err != nil {
 			return nil, err
 		}
