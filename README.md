@@ -33,11 +33,12 @@ See Docker documentation below.
 Minimal example for both server and client.
 
 ```
+chmod 744 verify.sh
 # SERVER:
 # create a new CA
 ./scepserver-linux-amd64 ca -init
 # start server
-./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret -csrverifierexec ./verify
+./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret -csrverifierexec ./verify.sh
 
 # SCEP request:
 # in a separate terminal window, run a client
