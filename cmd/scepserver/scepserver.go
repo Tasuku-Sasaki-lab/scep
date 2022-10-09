@@ -19,6 +19,7 @@ import (
 	scepdepot "github.com/micromdm/scep/v2/depot"
 	"github.com/micromdm/scep/v2/depot/file"
 	scepserver "github.com/micromdm/scep/v2/server"
+	selfmadecsrverifier "github.com/tasuku-revol/selfmadecsrverifier/v2"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
@@ -42,16 +43,17 @@ func main() {
 
 	//main flags
 	var (
-		flVersion           = flag.Bool("version", false, "prints version information")
-		flPort              = flag.String("port", envString("SCEP_HTTP_LISTEN_PORT", "8080"), "port to listen on")
-		flDepotPath         = flag.String("depot", envString("SCEP_FILE_DEPOT", "depot"), "path to ca folder")
-		flCAPass            = flag.String("capass", envString("SCEP_CA_PASS", ""), "passwd for the ca.key")
-		flClDuration        = flag.String("crtvalid", envString("SCEP_CERT_VALID", "365"), "validity for new client certificates in days")
-		flClAllowRenewal    = flag.String("allowrenew", envString("SCEP_CERT_RENEW", "14"), "do not allow renewal until n days before expiry, set to 0 to always allow")
-		flChallengePassword = flag.String("challenge", envString("SCEP_CHALLENGE_PASSWORD", ""), "enforce a challenge password")
-		flCSRVerifierExec   = flag.String("csrverifierexec", envString("SCEP_CSR_VERIFIER_EXEC", ""), "will be passed the CSRs for verification")
-		flDebug             = flag.Bool("debug", envBool("SCEP_LOG_DEBUG"), "enable debug logging")
-		flLogJSON           = flag.Bool("log-json", envBool("SCEP_LOG_JSON"), "output JSON logs")
+		flVersion             = flag.Bool("version", false, "prints version information")
+		flPort                = flag.String("port", envString("SCEP_HTTP_LISTEN_PORT", "8080"), "port to listen on")
+		flDepotPath           = flag.String("depot", envString("SCEP_FILE_DEPOT", "depot"), "path to ca folder")
+		flCAPass              = flag.String("capass", envString("SCEP_CA_PASS", ""), "passwd for the ca.key")
+		flClDuration          = flag.String("crtvalid", envString("SCEP_CERT_VALID", "365"), "validity for new client certificates in days")
+		flClAllowRenewal      = flag.String("allowrenew", envString("SCEP_CERT_RENEW", "14"), "do not allow renewal until n days before expiry, set to 0 to always allow")
+		flChallengePassword   = flag.String("challenge", envString("SCEP_CHALLENGE_PASSWORD", ""), "enforce a challenge password")
+		flCSRVerifierExec     = flag.String("csrverifierexec", envString("SCEP_CSR_VERIFIER_EXEC", ""), "will be passed the CSRs for verification")
+		flCSRVerifierSelfMade = flag.Bool("csrverifierselfmade", envBool("SCEP_CSR_VERIFIER_SELF_MADE"), "will be passed the CSRs for verification with fastify API")
+		flDebug               = flag.Bool("debug", envBool("SCEP_LOG_DEBUG"), "enable debug logging")
+		flLogJSON             = flag.Bool("log-json", envBool("SCEP_LOG_JSON"), "output JSON logs")
 	)
 	flag.Usage = func() {
 		flag.PrintDefaults()
@@ -105,6 +107,11 @@ func main() {
 		os.Exit(1)
 	}
 	var csrVerifier csrverifier.CSRVerifier
+	if *flCSRVerifierExec > "" && *flCSRVerifierSelfMade {
+		fmt.Print("dwwde\n")
+		lginfo.Log(" challengeを自作のプログラムで検証するには２通りの方法があります。どちらか１つの設定としてください。csrverifierexecは指定したシェルスクリプトを動かします。CSR_mongoにスクリプトを用意しています。csrverifierselfmadeは自作のGoのモジュールを使います。")
+		os.Exit(1)
+	}
 	if *flCSRVerifierExec > "" {
 		executableCSRVerifier, err := executablecsrverifier.New(*flCSRVerifierExec, lginfo)
 		if err != nil {
@@ -112,6 +119,16 @@ func main() {
 			os.Exit(1)
 		}
 		csrVerifier = executableCSRVerifier
+	}
+
+	//完成したらここを変える
+	if *flCSRVerifierSelfMade {
+		selfMadeCSRVerifier, err := selfmadecsrverifier.New(lginfo) //import
+		if err != nil {
+			lginfo.Log("err", err, "msg", "Could not instantiate CSR verifier")
+			os.Exit(1)
+		}
+		csrVerifier = selfMadeCSRVerifier
 	}
 
 	var svc scepserver.Service // scep service
