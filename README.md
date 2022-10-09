@@ -7,7 +7,9 @@
 
 ## Feture
 fork with `https://github.com/micromdm/scep/`
-          `https://github.com/tasuku-revol/CSR_mongo`
+          <br>
+ import from `https://github.com/tasuku-revol/selfmadecsrverifier`<br>
+ should be used with `https://github.com/tasuku-revol/Verify-Admin`
 
 
 
@@ -33,7 +35,6 @@ See Docker documentation below.
 Minimal example for both server and client.
 
 ```
-chmod 744 verify.sh
 # SERVER:
 # create a new CA
 ./scepserver-linux-amd64 ca -init
@@ -112,12 +113,27 @@ Usage of ca:
 
 ### CSR verifier
 
-The `-csrverifierexec` switch to the SCEP server allows for executing a command before a certificate is issued to verify the submitted CSR. Scripts exiting without errors (zero exit status) will proceed to certificate issuance, otherwise a SCEP error is generated to the client. For example if you wanted to just save the CSR this is a valid CSR verifier shell script:
+CSR verifierには二つの検証方法があります。一つは-csrverifierexecを使う方法。もう一つは-csrverifierselfmadeを使う方法です。この二つは同時には使用しないでください。<br>
+
+The `-csrverifierexec` switch to the SCEP server allows for executing a command before a certificate is issued to verify the submitted CSR. Scripts exiting without errors (zero exit status) will proceed to certificate issuance, otherwise a SCEP error is generated to the client. <br>
+
+-csrverifierexecを使う方法は、シェルスクリプトで新たなコマンドを動かす方法で、検証用のコード：CSR＿mongoを用意しました。すでにForkをしております。また、動かすときは予めmongoの設定を完了しておいてください。CSR＿mongoの詳細はこちらをご覧ください。
+          `https://github.com/tasuku-revol/CSR_mongo`　<br>
+ シェルスクリプトに権限を付与するのを忘れないでください。
 
 ```sh
-#!/bin/sh
+chmod 744 verify.sh
+#start server
+./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret -csrverifierexec ./verify.sh
 
-cat - > /tmp/scep.csr
+```
+-csrverifierselfmadeを使う方法です。管理サーバーに通信し、検証を行います。事前に管理サーバーを立ち上げ、証明書を登録しておく必要があります。管理サーバーの立ち上げ、証明書の登録はこちらをご覧ください。`https://github.com/tasuku-revol/Verify-Admin`
+
+```sh
+chmod 744 verify.sh
+#start server
+./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret -csrverifierselfmade
+
 ```
 
 ## Client Usage
@@ -156,6 +172,16 @@ Usage of ./scepclient-linux-amd64:
   -version
     	prints version information
 ```
+
+渡されたCNとSecretをもとにオプションを設定します。<br>
+
+例えば、CNが”CN=TEST1,OU=MDM,O=scep-client,C=US”、Secretが”secret”である時、以下のように設定します。
+
+```sh
+./scepclient-linux-amd64 -private-key client.key -server-url=http://127.0.0.1:2016/scep  -cn TEST1 -ou MDM -organization scep-client -country US -challenge=secret 
+
+```
+
 
 Note: Make sure to specify the desired endpoint in your `-server-url` value (e.g. `'http://scep.groob.io:2016/scep'`)
 
