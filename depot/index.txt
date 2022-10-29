@@ -1,3 +1,0 @@
-V	230316074405Z		02	scepclient.2.pem	/C=US/O=scep-client/OU=MDM/CN=scepclient
-V	231012023847Z		03	TEST1.3.pem	/C=US/O=scep-client/OU=MDM/CN=TEST1
-V	231012024110Z		04	TEST2.4.pem	/C=US/O=scep-client/OU=MDM/CN=TEST2
