@@ -272,12 +272,12 @@ func main() {
 		flPKeyPath          = flag.String("private-key", "", "private key path, if there is no key, scepclient will create one")
 		flCertPath          = flag.String("certificate", "", "certificate path, if there is no key, scepclient will create one")
 		flKeySize           = flag.Int("keySize", 2048, "rsa key size")
-		flOrg               = flag.String("organization", "scep-client", "organization for cert")
+		flOrg               = flag.String("organization", "procube", "organization for cert")
 		flCName             = flag.String("cn", "scepclient", "common name for certificate")
-		flOU                = flag.String("ou", "MDM", "organizational unit for certificate")
+		flOU                = flag.String("ou", "procube-sdcass", "organizational unit for certificate")
 		flLoc               = flag.String("locality", "", "locality for certificate")
 		flProvince          = flag.String("province", "", "province for certificate")
-		flCountry           = flag.String("country", "US", "country code in certificate")
+		flCountry           = flag.String("country", "JP", "country code in certificate")
 		flCACertMessage     = flag.String("cacert-message", "", "message sent with GetCACert operation")
 
 		// in case of multiple certificate authorities, we need to figure out who the recipient of the encrypted
