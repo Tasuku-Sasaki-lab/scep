@@ -19,7 +19,7 @@ import (
 	scepdepot "github.com/micromdm/scep/v2/depot"
 	"github.com/micromdm/scep/v2/depot/file"
 	scepserver "github.com/micromdm/scep/v2/server"
-	selfmadecsrverifier "github.com/tasuku-revol/selfmadecsrverifier/v2"
+	selfmadecsrverifier "github.com/tasuku-revol/selfmadecsrverifier/v3"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"

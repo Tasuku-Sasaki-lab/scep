@@ -7,8 +7,7 @@ require (
 	github.com/go-kit/kit v0.12.0
 	github.com/gorilla/mux v1.6.2
 	github.com/groob/finalizer v0.0.0-20170707115354-4c2ed49aabda
-	github.com/kr/logfmt v0.0.0-20140226030751-b84e30acd515 // indirect
 	github.com/pkg/errors v0.9.1
-	github.com/tasuku-revol/selfmadecsrverifier/v2 v2.0.0-20221009095447-9ca91370b517 // indirect
+	github.com/tasuku-revol/selfmadecsrverifier/v3 v3.0.0-20221030044550-99ef8644feb5
 	go.mozilla.org/pkcs7 v0.0.0-20210826202110-33d05740a352
 )
