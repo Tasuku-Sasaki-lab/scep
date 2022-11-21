@@ -14,12 +14,12 @@ import (
 	"strconv"
 	"syscall"
 
+	selfmadecsrverifier "github.com/Tasuku-Sasaki-lab/selfmadecsrverifier/v3"
 	"github.com/micromdm/scep/v2/csrverifier"
 	executablecsrverifier "github.com/micromdm/scep/v2/csrverifier/executable"
 	scepdepot "github.com/micromdm/scep/v2/depot"
 	"github.com/micromdm/scep/v2/depot/file"
 	scepserver "github.com/micromdm/scep/v2/server"
-	selfmadecsrverifier "github.com/tasuku-revol/selfmadecsrverifier/v3"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
