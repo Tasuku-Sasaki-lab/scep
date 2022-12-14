@@ -1,3 +1,9 @@
 scepserver-*
 scepclient-*
 .env
+*.pem
+*.key
+depot/*.pem
+depot/*.key
+depot/serial
+depot/index.html
