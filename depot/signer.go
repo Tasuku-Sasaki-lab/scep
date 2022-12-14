@@ -20,7 +20,7 @@ type Signer struct {
 // Option customizes Signer
 type Option func(*Signer)
 
-// NewSigner creates a new Signer
+// NewSigner creates a new Signer　・・ここ変えていったらり
 func NewSigner(depot Depot, opts ...Option) *Signer {
 	s := &Signer{
 		depot:            depot,
@@ -60,7 +60,7 @@ func (s *Signer) SignCSR(m *scep.CSRReqMessage) (*x509.Certificate, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	//serial
 	serial, err := s.depot.Serial()
 	if err != nil {
 		return nil, err

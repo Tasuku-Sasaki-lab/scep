@@ -174,7 +174,6 @@ func makeDn(cert *x509.Certificate) string {
 
 // Determine if the cadb already has a valid certificate with the same name
 func (d *fileDepot) HasCN(_ string, allowTime int, cert *x509.Certificate, revokeOldCertificate bool) (bool, error) {
-
 	var addDB bytes.Buffer
 	candidates := make(map[string]string)
 

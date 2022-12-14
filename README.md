@@ -39,7 +39,7 @@ Minimal example for both server and client.
 # create a new CA
 ./scepserver-linux-amd64 ca -init
 # start server
-./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret -csrverifierexec ./verify.sh
+./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret -csrverifierselfmade
 
 # SCEP request:
 # in a separate terminal window, run a client
@@ -70,8 +70,8 @@ $ ./scepserver-linux-amd64 -help
     	enforce a challenge password
   -crtvalid string
     	validity for new client certificates in days (default "365")
-  -csrverifierexec string
-    	will be passed the CSRs for verification
+  -csrverifierselfmade
+        will be passed the CSRs for verification with fastify API
   -debug
     	enable debug logging
   -depot string
@@ -112,21 +112,6 @@ Usage of ca:
 ```
 
 ### CSR verifier
-
-CSR verifierには二つの検証方法があります。一つは-csrverifierexecを使う方法。もう一つは-csrverifierselfmadeを使う方法です。この二つは同時には使用しないでください。<br>
-
-The `-csrverifierexec` switch to the SCEP server allows for executing a command before a certificate is issued to verify the submitted CSR. Scripts exiting without errors (zero exit status) will proceed to certificate issuance, otherwise a SCEP error is generated to the client. <br>
-
--csrverifierexecを使う方法は、シェルスクリプトで新たなコマンドを動かす方法で、検証用のコード：CSR＿mongoを用意しました。すでにForkをしております。また、動かすときは予めmongoの設定を完了しておいてください。CSR＿mongoの詳細はこちらをご覧ください。
-          `https://github.com/Tasuku-Sasaki-lb/CSR_mongo`　<br>
- シェルスクリプトに権限を付与するのを忘れないでください。
-
-```sh
-chmod 744 verify.sh
-#start server
-./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret -csrverifierexec ./verify.sh
-
-```
 -csrverifierselfmadeを使う方法です。管理サーバーに通信し、検証を行います。事前に管理サーバーを立ち上げ、証明書を登録しておく必要があります。管理サーバーの立ち上げ、証明書の登録はこちらをご覧ください。`https://github.com/Tasuku-Sasaki-lab/Verify-Admin`
 
 ```sh

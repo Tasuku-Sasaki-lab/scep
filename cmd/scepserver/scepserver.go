@@ -1,5 +1,6 @@
 package main
 
+//depotを無くしてしまったらいいのかな
 import (
 	"crypto/rand"
 	"crypto/rsa"
@@ -15,15 +16,17 @@ import (
 	"syscall"
 
 	selfmadecsrverifier "github.com/Tasuku-Sasaki-lab/selfmadecsrverifier/v3"
+	scepdepot "github.com/Tasuku-Sasaki-lab/selfmadedepot"
+	"github.com/Tasuku-Sasaki-lab/selfmadedepot/system"
+
 	"github.com/micromdm/scep/v2/csrverifier"
-	executablecsrverifier "github.com/micromdm/scep/v2/csrverifier/executable"
-	scepdepot "github.com/micromdm/scep/v2/depot"
-	"github.com/micromdm/scep/v2/depot/file"
 	scepserver "github.com/micromdm/scep/v2/server"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 )
+
+//depot と　depot/file の二つをimport している　二つとも自分で作ってしまうか
 
 // version info
 var (
@@ -50,7 +53,6 @@ func main() {
 		flClDuration          = flag.String("crtvalid", envString("SCEP_CERT_VALID", "365"), "validity for new client certificates in days")
 		flClAllowRenewal      = flag.String("allowrenew", envString("SCEP_CERT_RENEW", "14"), "do not allow renewal until n days before expiry, set to 0 to always allow")
 		flChallengePassword   = flag.String("challenge", envString("SCEP_CHALLENGE_PASSWORD", ""), "enforce a challenge password")
-		flCSRVerifierExec     = flag.String("csrverifierexec", envString("SCEP_CSR_VERIFIER_EXEC", ""), "will be passed the CSRs for verification")
 		flCSRVerifierSelfMade = flag.Bool("csrverifierselfmade", envBool("SCEP_CSR_VERIFIER_SELF_MADE"), "will be passed the CSRs for verification with fastify API")
 		flDebug               = flag.Bool("debug", envBool("SCEP_LOG_DEBUG"), "enable debug logging")
 		flLogJSON             = flag.Bool("log-json", envBool("SCEP_LOG_JSON"), "output JSON logs")
@@ -88,9 +90,13 @@ func main() {
 	lginfo := level.Info(logger)
 
 	var err error
+	//ここでDEPOTをやめてしまおかな
+
 	var depot scepdepot.Depot // cert storage
+	//ここのfileを変更 //作成したのを変える
+	//ファイルのパスは必要やわ　CAの置き場所やし
 	{
-		depot, err = file.NewFileDepot(*flDepotPath)
+		depot, err = system.NewSystemDepot(*flDepotPath)
 		if err != nil {
 			lginfo.Log("err", err)
 			os.Exit(1)
@@ -107,20 +113,6 @@ func main() {
 		os.Exit(1)
 	}
 	var csrVerifier csrverifier.CSRVerifier
-	if *flCSRVerifierExec > "" && *flCSRVerifierSelfMade {
-		fmt.Print("dwwde\n")
-		lginfo.Log(" challengeを自作のプログラムで検証するには２通りの方法があります。どちらか１つの設定としてください。csrverifierexecは指定したシェルスクリプトを動かします。CSR_mongoにスクリプトを用意しています。csrverifierselfmadeは自作のGoのモジュールを使います。")
-		os.Exit(1)
-	}
-	if *flCSRVerifierExec > "" {
-		executableCSRVerifier, err := executablecsrverifier.New(*flCSRVerifierExec, lginfo)
-		if err != nil {
-			lginfo.Log("err", err, "msg", "Could not instantiate CSR verifier")
-			os.Exit(1)
-		}
-		csrVerifier = executableCSRVerifier
-	}
-
 	//完成したらここを変える
 	if *flCSRVerifierSelfMade {
 		selfMadeCSRVerifier, err := selfmadecsrverifier.New(lginfo) //import
@@ -131,7 +123,7 @@ func main() {
 		csrVerifier = selfMadeCSRVerifier
 	}
 
-	var svc scepserver.Service // scep service
+	var svc scepserver.Service // scep service　//ここなくなったらやばいかな
 	{
 		crts, key, err := depot.CA([]byte(*flCAPass))
 		if err != nil {
@@ -186,6 +178,7 @@ func main() {
 }
 
 func caMain(cmd *flag.FlagSet) int {
+	//格納の方はこれでいいか
 	var (
 		flDepotPath = cmd.String("depot", "depot", "path to ca folder")
 		flInit      = cmd.Bool("init", false, "create a new CA")
