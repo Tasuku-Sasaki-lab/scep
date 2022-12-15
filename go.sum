@@ -50,6 +50,8 @@ github.com/Tasuku-Sasaki-lab/selfmadedepot v0.0.0-20221213073733-4e3b5241dfa2 h1
 github.com/Tasuku-Sasaki-lab/selfmadedepot v0.0.0-20221213073733-4e3b5241dfa2/go.mod h1:3wV8XzN1zp9G4bUFC7DjLwXwqawLfRL55hEtYWn4qM4=
 github.com/Tasuku-Sasaki-lab/selfmadedepot v0.0.0-20221214031214-ed20c40cd672 h1:1OuWYPKan7AFZY7Dt9D8iPS9b9Bro4e9myrqECOOZTQ=
 github.com/Tasuku-Sasaki-lab/selfmadedepot v0.0.0-20221214031214-ed20c40cd672/go.mod h1:J5r0gnvKUrhxKBpwft3VbR/D8tCkWHy+bbgSTp3mk34=
+github.com/Tasuku-Sasaki-lab/selfmadedepot v0.0.0-20221215045646-b4b513f7bed9 h1:dEbzqcrSsKJpUlW4M9d+b84Hg4+zmJx9E819rF//gTo=
+github.com/Tasuku-Sasaki-lab/selfmadedepot v0.0.0-20221215045646-b4b513f7bed9/go.mod h1:J5r0gnvKUrhxKBpwft3VbR/D8tCkWHy+bbgSTp3mk34=
 github.com/VividCortex/gohistogram v1.0.0/go.mod h1:Pf5mBqqDxYaXu3hDrrU+w6nw50o/4+TcAqDqk/vUH7g=
 github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5/go.mod h1:SkGFH1ia65gfNATL8TAiHDNxPzPdmEL5uirI2Uyuz6c=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
