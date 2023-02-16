@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/Tasuku-Sasaki-lab/selfmadecsrverifier/v3 v3.0.0-20221121024807-5eca452ab0b1
-	github.com/Tasuku-Sasaki-lab/selfmadedepot v0.0.0-20221215045646-b4b513f7bed9
+	github.com/Tasuku-Sasaki-lab/selfmadedepot v0.0.0-20230213125212-fe293990d0ca
 	github.com/boltdb/bolt v1.3.1
 	github.com/go-kit/kit v0.12.0
 	github.com/gorilla/mux v1.6.2

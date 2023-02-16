@@ -39,7 +39,7 @@ Minimal example for both server and client.
 # create a new CA
 ./scepserver-linux-amd64 ca -init
 # start server
-./scepserver-linux-amd64 -depot depot -port 2016 -challenge=secret -csrverifierselfmade
+./scepserver-linux-amd64 -depot depot -port 2016 -csrverifierselfmade
 
 # SCEP request:
 # in a separate terminal window, run a client
